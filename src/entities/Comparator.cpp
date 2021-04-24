@@ -1,7 +1,3 @@
-//
-// Created by ojcch on 4/2/2020.
-//
-
 #include "comparator/Comparator.h"
 
 template<class Comparable>

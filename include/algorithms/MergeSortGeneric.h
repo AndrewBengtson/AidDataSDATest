@@ -7,18 +7,18 @@
 
 
 #include <vector>
-#include "comparator/Comparator.h"
+#include "entities/Comparator.h"
 using namespace std;
 
 /*
- * Mergesort implementation for integers only
+ * Mergesort implementation which uses a template class to work generically.
+ * The sort option requires a subclass of Comparator which allows us to use various comparison schemes
  */
 template <class Comparable>
 class MergeSortGeneric {
 private:
     //the vector that mergesort aims to sort
     vector<Comparable> array;
-
     //method that implements mergesort.
     //it receives a temporary array, used by the merging operation, and the left and right indices that
     //indicate the portion of the array that will be sorted

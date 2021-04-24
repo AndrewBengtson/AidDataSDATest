@@ -24,7 +24,7 @@ vector<Comparable> MergeSortGeneric<Comparable>::sort(Comparator<Comparable>* co
 }
 template <class Comparable>
 void MergeSortGeneric<Comparable>::mergeSort(vector<Comparable> &temp, int left, int right, Comparator<Comparable>* comparator) {
-    //the breaking poComparable is when we get an array of size 1
+    //We only do sort work when we are in a situation where left is to the left of right
     if(left<right) {
         //we define a center poComparable
         int center = (left + right) / 2;
@@ -33,7 +33,7 @@ void MergeSortGeneric<Comparable>::mergeSort(vector<Comparable> &temp, int left,
         //merge the center to right
         mergeSort(temp, center + 1, right,comparator);
         //finally merge everything:
-        //we define the endpoComparables of the left subarray
+        //we define the endpoints of the left subarray
         int leftend = center;
         int numElements = right - left + 1;
         //we use an index to store where in the temporary array we have filled up to
