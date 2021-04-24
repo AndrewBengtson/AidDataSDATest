@@ -2,6 +2,8 @@
 #include "algorithms/MergeSortGeneric.cpp"
 #include "entities/Comparator.cpp"
 #include "entities/Coordinate.cpp"
+#include "entities/XComparator.cpp"
+#include "entities/YComparator.cpp"
 using namespace std;
 int main() {
     cout<<"Question 1:"<<endl;
