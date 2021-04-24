@@ -8,18 +8,20 @@
 
 class Coordinate {
 public:
+    //default constructor
+    Coordinate(){}
     //We have a constructor which fills in the private fields
     Coordinate(float x, float y, bool isInA);
     //Get method for the stored x value
-    int getX() {
+    int getX() const {
         return x;
     }
     //Get method for the stored y value
-    int getY() {
+    int getY() const {
         return y;
     }
     //returns true if the coordinate is from a.csv, else returns false
-    bool isInA(){
+    bool isInA() const{
         return InA;
     }
     //this constant method returns the distance between this coordinate and the parameter coordinate
