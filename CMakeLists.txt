@@ -14,4 +14,4 @@ file(GLOB_RECURSE SRC_FILES
         "${PROJECT_SOURCE_DIR}/src/*.cpp"
         )
 
-add_executable(AidDataSDATest main.cpp)
+add_executable(AidDataSDATest src/main.cpp)

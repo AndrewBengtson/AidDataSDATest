@@ -5,7 +5,7 @@
 #include "entities/Coordinate.h"
 #include <math.h>
 
-Coordinate::Coordinate(int x, int y, bool isInA) {
+Coordinate::Coordinate(float x, float y, bool isInA) {
     //this constructor takes all of the relevant fields as parameters and store them as private fields
     this->x = x;
     this->y = y;

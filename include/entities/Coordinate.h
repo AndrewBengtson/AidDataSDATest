@@ -9,7 +9,7 @@
 class Coordinate {
 public:
     //We have a constructor which fills in the private fields
-    Coordinate(int x, int y, bool isInA);
+    Coordinate(float x, float y, bool isInA);
     //Get method for the stored x value
     int getX() {
         return x;

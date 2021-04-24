@@ -1,4 +1,4 @@
-#include "comparator/Comparator.h"
+#include "entities/Comparator.h"
 
 template<class Comparable>
 bool Comparator<Comparable>::lessThanOrEqualTo(Comparable &obj1, Comparable &obj2) {
