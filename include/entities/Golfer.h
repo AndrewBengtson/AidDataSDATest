@@ -11,13 +11,26 @@ public:
     //default constructor for the compiler
     Golfer(){}
     //this constructor initializes the relevant fields
+    Golfer(string name,float avg_score,int lowest_round);
+    //get method for the golfer's name
+    string getName() const{
+        return name;
+    }
+    //get method for the average score
+    float getAvgScore() const{
+        return avgScore;
+    }
+    //get method for the single round
+    int getLowestScore() const{
+        return lowestSingleRound;
+    }
 private:
     //this string stores the name of the golfer
-    std::string name;
+    string name;
     //this floating point number is the average score for the golfer
-    float avg_score;
+    float avgScore;
     //this int is the lowest score the golfer got across all rounds
-    int lowest_single_round;
+    int lowestSingleRound;
 };
 
 
