@@ -13,11 +13,11 @@ public:
     //We have a constructor which fills in the private fields
     Coordinate(float x, float y, bool isInA);
     //Get method for the stored x value
-    int getX() const {
+    float getX() const {
         return x;
     }
     //Get method for the stored y value
-    int getY() const {
+    float getY() const {
         return y;
     }
     //returns true if the coordinate is from a.csv, else returns false
@@ -29,8 +29,8 @@ public:
 
 private:
     //this field will store the x value
-    int x;
-    int y;
+    float x;
+    float y;
     bool InA;
 };
 
