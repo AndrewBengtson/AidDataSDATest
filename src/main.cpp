@@ -36,13 +36,19 @@ int main() {
     }
     readFile(unsortedCoordArray, b, false);
     //next we will use MergeSort to sort the entire array by x values and than y (Taking advantage of O(n logn)
+    Coordinate distance = Coordinate(1.0,1.0,true);
+    Coordinate distance2 = Coordinate(2,2,true);
+    cout<<"distance test: "<<distance.distance(&distance2)<<endl;
     Comparator<Coordinate> *xComparator =new XComparator;
     vector<Coordinate> sortedCoordArray =MergeSortGeneric<Coordinate>(unsortedCoordArray).sort(xComparator);
     //now that we have the array sorted by x values we can use a divide and conquer algorithm to find the closest coordinates
     vector<Coordinate> closestPair = findClosestCoordinatePair(sortedCoordArray,0,sortedCoordArray.size()-2);
     cout<<"the closest pair are " <<closestPair[0].getX()<<", "<<closestPair[0].getY()<<" from "<<closestPair[0].isInA()<<
     " and "<<closestPair[1].getX()<<", "<<closestPair[1].getY()<<" from "<<closestPair[1].isInA()<<endl;
-     return 0;
+
+
+
+    return 0;
 }
 //this recursive function reads the given file, and inserts coordinates into the provided array
 void readFile(vector<Coordinate> &coordArray, fstream &fStream, bool isInA) {
@@ -76,10 +82,12 @@ void readFile(vector<Coordinate> &coordArray, fstream &fStream, bool isInA) {
 vector<Coordinate> findClosestCoordinatePair(vector<Coordinate> &coordArray,int left, int right){
     //if this is called for a negative value we return
     if(left<0 || right<0){
+        cout<<"called on "<<left<<", "<<right<<endl;
         return {Coordinate(0,0,true),Coordinate(FLT_MAX,FLT_MAX,false)};
     }
-    //the base case for recursion is when left and right are within ~10 indexes of each other
-    if(abs(right-left<=10)){
+    //the base case for recursion is when left and right are within ~15 indexes of each other, this small brute force
+    // solution will only be used on small arrays
+    if(right-left<15){
         //to get things ready we use a fake value which is absurdly large
         vector<Coordinate> closestPair {Coordinate(0,0,true),Coordinate(FLT_MAX,FLT_MAX,false)};
         //when we hit our base case we simply iterate across the vector between left and right
@@ -91,7 +99,7 @@ vector<Coordinate> findClosestCoordinatePair(vector<Coordinate> &coordArray,int 
                 if(coordArray[i].distance(&coordArray[j])<closestPair[0].distance(&closestPair[1])&&(coordArray[i].isInA()^coordArray[j].isInA())){
                     closestPair[0] = coordArray[i];
                     closestPair[1] = coordArray[j];
-                    printf("we are now storing :%i, %i and %i, %i",closestPair[0].getX(),closestPair[0].getY(),closestPair[1].getY(),closestPair[1].getY());
+                    //printf("we are now storing :%i, %i and %i, %i",closestPair[0].getX(),closestPair[0].getY(),closestPair[1].getY(),closestPair[1].getY());
                 }
             }
         }
@@ -109,6 +117,7 @@ vector<Coordinate> findClosestCoordinatePair(vector<Coordinate> &coordArray,int 
     int closestDistance = recursivePair[0].distance(&recursivePair[1]);
     //now we have to consider the coordinates on the line between the two halves
     //these will be the coordinates which are between the center-closestDistance and center+closestDistance
-    vector<Coordinate> edgePair = findClosestCoordinatePair(coordArray,center-closestDistance,center+closestDistance);
+    vector<Coordinate> edgePair = findClosestCoordinatePair(coordArray, center - closestDistance,
+                                                                center + closestDistance);
     return recursivePair[0].distance(&recursivePair[1]) < edgePair[0].distance(&edgePair[1]) ? recursivePair : edgePair;
 }
