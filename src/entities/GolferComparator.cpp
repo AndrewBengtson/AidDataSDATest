@@ -14,3 +14,8 @@ bool GolferComparator::lessThan(Golfer &g1, Golfer &g2) {
         return g1.getLowestScore()<g2.getLowestScore();
     }
 }
+
+bool GolferComparator::equals(Golfer &g1, Golfer &g2) {
+    //consider the case they would be equal even with a tie breaker
+    return g1.getAvgScore()==g2.getAvgScore()&&g1.getLowestScore()==g2.getLowestScore();
+}

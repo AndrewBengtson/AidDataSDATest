@@ -10,6 +10,8 @@ class NameComparator : public Comparator<Golfer>{
 public:
     //this compares golfers only by their names, which will sort golfers with the same name together
     bool lessThan(Golfer &g1, Golfer &g2) override ;
+    //this returns true if the golfers have the same name
+    bool equals(Golfer &g1, Golfer &g2) override;
 };
 
 

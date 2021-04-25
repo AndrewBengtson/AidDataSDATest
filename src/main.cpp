@@ -13,21 +13,33 @@
 #include <float.h>
 
 void readFile(vector<Coordinate> &coordArray, fstream &fStream, bool isInA);
+void readGolferFile(vector<Golfer> &golfArray, fstream &fStream);
 vector<Coordinate> findClosestCoordinatePair(vector<Coordinate> &coordArray,int left, int right);
+
+void QuestionOne();
+
+void QuestionTwo();
+
 using namespace std;
 
 int main() {
-    cout<<"Question 1:"<<endl;
+    QuestionOne();
+    //-------------------------------------------------------
+    QuestionTwo();
+    return 0;
+}
 
+//this function calls my solution to question one
+void QuestionOne() {
+    cout << "Question 1:" << endl;
     //first we will have to read data from the files and insert them into a single vector
-    //we will use a custom coordinate class to hold x and y as fields and a reference to which file it came from
+//we will use a custom coordinate class to hold x and y as fields and a reference to which file it came from
     vector<Coordinate> unsortedCoordArray;
     fstream a;
     a.open("../include/data/a.csv", ios::in);
     //check if the file is open
     if (!a.is_open()) {
         cout << "Could not find/open file a" << endl;
-        return 1;
     }
     readFile(unsortedCoordArray, a, true);
     fstream b;
@@ -35,7 +47,6 @@ int main() {
     //check if the file is open
     if (!b.is_open()) {
         cout << "Could not find/open file b" << endl;
-        return 1;
     }
     readFile(unsortedCoordArray, b, false);
     //next we will use MergeSort to sort the entire array by x values and than y (Taking advantage of O(n logn)
@@ -45,19 +56,9 @@ int main() {
     vector<Coordinate> closestPair = findClosestCoordinatePair(sortedCoordArray,0,sortedCoordArray.size()-2);
     cout<<"the closest pair are " <<closestPair[0].getX()<<", "<<closestPair[0].getY()<<" from "<<(closestPair[0].isInA() ? "a" : "b")<<
     " and "<<closestPair[1].getX()<<", "<<closestPair[1].getY()<<" from "<<(closestPair[1].isInA() ? "a" : "b") <<endl;
-    //-------------------------------------------------------
-    cout<<"Question 2"<<endl;
-    //first we will read the golf scores from the file
-    //next we will sort the scores by name in order to match the scores for the same golfer
-    //we iterate through the sorted scores
-        //now we iterate through golfers with the same name
-        //if there are less than 5, we just ignore them
-        //if there are 5 or more, we average them and make an accurate golfer which we put in the rankings
-    //finally we sort the rankings using GolferComparator
-
-    return 0;
 }
-//this recursive function reads the given file, and inserts coordinates into the provided array
+
+//this function reads the given file, and inserts coordinates into the provided array
 void readFile(vector<Coordinate> &coordArray, fstream &fStream, bool isInA) {
     string line;
     //we use the bool first line to not ingest the column names
@@ -72,7 +73,7 @@ void readFile(vector<Coordinate> &coordArray, fstream &fStream, bool isInA) {
             }
             //repeat this for y
             string yString = "";
-            for (i++; line.at(i) != ','; i++) {
+            for (i++; line.at(i) != ','||i==line.size(); i++) {
                 yString.push_back(line.at(i));
             }
             //make a coordinate with the given line and push it to the back of the coordArray
@@ -83,7 +84,6 @@ void readFile(vector<Coordinate> &coordArray, fstream &fStream, bool isInA) {
         }
     }
 }
-
 //This recursive function finds the pair of closest coordinates between the indexes left and right
 //this function will return a vector which contains the two Coordinates
 vector<Coordinate> findClosestCoordinatePair(vector<Coordinate> &coordArray,int left, int right){
@@ -126,4 +126,80 @@ vector<Coordinate> findClosestCoordinatePair(vector<Coordinate> &coordArray,int 
     vector<Coordinate> edgePair = findClosestCoordinatePair(coordArray, center - closestDistance,
                                                                 center + closestDistance);
     return recursivePair[0].distance(&recursivePair[1]) < edgePair[0].distance(&edgePair[1]) ? recursivePair : edgePair;
+}
+//-------------------------------
+//helper function for Q2
+void QuestionTwo() {
+    cout <<endl<< "Question 2" << endl;
+    //first we will read the golf scores from the file
+    vector<Golfer> roundArray;
+    vector<Golfer> ranking;
+    fstream golfFile;
+    golfFile.open("../include/data/golf_scores.csv", ios::in);
+    //check if the file is open
+    if (!golfFile.is_open()) {
+        cout << "Could not find/open golf scores file" << endl;
+    }
+    readGolferFile(roundArray,golfFile);
+    //next we will sort the scores by name in order to match the scores for the same golfer
+    Comparator<Golfer> *nameComparator =new NameComparator;
+    roundArray = MergeSortGeneric<Golfer>(roundArray).sort(nameComparator);
+    //we iterate through the sorted scores
+    for(int i=0;i<roundArray.size();) {
+        //now we iterate through golfers with the same name
+        string name = roundArray[i].getName();
+        vector<int> score;
+        while(i<roundArray.size()&&roundArray[i].getName()==name){
+            score.push_back(roundArray[i].getLowestScore());
+            i++;
+        }
+        //if there are less than 5, we just ignore them
+        //if there are 5 or more, we average them and make an accurate golfer which we put in the rankings
+        if(score.size()>=5){
+            float avg_score=0;
+            int lowest_score = INT16_MAX;
+            for(int j=0;j<score.size();j++){
+                avg_score+=score[j];
+                if(score[j]<lowest_score){
+                    lowest_score = score[j];
+                }
+            }
+            avg_score = avg_score/score.size();
+            ranking.emplace_back(name,avg_score,lowest_score);
+        }
+    }
+    //finally we sort the rankings using GolferComparator
+    Comparator<Golfer> *rankComparator =new GolferComparator;
+    ranking = MergeSortGeneric<Golfer>(ranking).sort(rankComparator);
+    //print the rankings
+    cout<<"ranking is:"<<endl;
+    for(int i=0;i<ranking.size();i++){
+        cout<<"in "<<(i+1)<<" is "<<ranking[i].getName()<<" with an average score of "<<(int)ranking[i].getAvgScore()
+        <<" and tie-breaking score of "<<ranking[i].getLowestScore()<<endl;
+    }
+}
+void readGolferFile(vector<Golfer> &golfArray, fstream &fStream) {
+    string line;
+    //we use the bool first line to not ingest the column names
+    bool firstLine = true;
+    while(getline(fStream,line)){
+        if(!firstLine) {
+            //first we will walk until we find a comma, creating a name string
+            string nameString = "";
+            int i = 0;
+            for (i; line.at(i) != ','; i++) {
+                nameString.push_back(line.at(i));
+            }
+            //repeat this for score
+            string scoreString = "";
+            for (i++;i<line.size(); i++) {
+                scoreString.push_back(line.at(i));
+            }
+            //make a golfer with the given data
+            golfArray.emplace_back(nameString,0.0,stoi(scoreString));
+        }
+        else{
+            firstLine = false;
+        }
+    }
 }
