@@ -25,7 +25,7 @@ public:
         return InA;
     }
     //this constant method returns the distance between this coordinate and the parameter coordinate
-    int distance(Coordinate* coordinate) const;
+    float distance(Coordinate* coordinate) const;
 
 private:
     //this field will store the x value
