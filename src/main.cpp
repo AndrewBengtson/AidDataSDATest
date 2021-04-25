@@ -36,18 +36,14 @@ int main() {
     }
     readFile(unsortedCoordArray, b, false);
     //next we will use MergeSort to sort the entire array by x values and than y (Taking advantage of O(n logn)
-    Coordinate distance = Coordinate(1.0,1.0,true);
-    Coordinate distance2 = Coordinate(2,2,true);
-    cout<<"distance test: "<<distance.distance(&distance2)<<endl;
     Comparator<Coordinate> *xComparator =new XComparator;
     vector<Coordinate> sortedCoordArray =MergeSortGeneric<Coordinate>(unsortedCoordArray).sort(xComparator);
     //now that we have the array sorted by x values we can use a divide and conquer algorithm to find the closest coordinates
     vector<Coordinate> closestPair = findClosestCoordinatePair(sortedCoordArray,0,sortedCoordArray.size()-2);
-    cout<<"the closest pair are " <<closestPair[0].getX()<<", "<<closestPair[0].getY()<<" from "<<closestPair[0].isInA()<<
-    " and "<<closestPair[1].getX()<<", "<<closestPair[1].getY()<<" from "<<closestPair[1].isInA()<<endl;
+    cout<<"the closest pair are " <<closestPair[0].getX()<<", "<<closestPair[0].getY()<<" from "<<(closestPair[0].isInA() ? "a" : "b")<<
+    " and "<<closestPair[1].getX()<<", "<<closestPair[1].getY()<<" from "<<(closestPair[1].isInA() ? "a" : "b") <<endl;
 
-
-
+    cout<<"Question 2"<<endl;
     return 0;
 }
 //this recursive function reads the given file, and inserts coordinates into the provided array
@@ -82,7 +78,6 @@ void readFile(vector<Coordinate> &coordArray, fstream &fStream, bool isInA) {
 vector<Coordinate> findClosestCoordinatePair(vector<Coordinate> &coordArray,int left, int right){
     //if this is called for a negative value we return
     if(left<0 || right<0){
-        cout<<"called on "<<left<<", "<<right<<endl;
         return {Coordinate(0,0,true),Coordinate(FLT_MAX,FLT_MAX,false)};
     }
     //the base case for recursion is when left and right are within ~15 indexes of each other, this small brute force
