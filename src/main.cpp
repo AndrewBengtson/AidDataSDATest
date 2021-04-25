@@ -1,10 +1,12 @@
 #include <iostream>
 #include "algorithms/MergeSortGeneric.cpp"
 #include "entities/Comparator.cpp"
+#include "entities/GolferComparator.cpp"
 #include "entities/Coordinate.cpp"
 #include "entities/XComparator.cpp"
 #include "entities/YComparator.cpp"
-#include <iostream>
+#include "entities/NameComparator.cpp"
+#include "entities/Golfer.cpp"
 #include <vector>
 #include <fstream>
 #include <string>
@@ -16,6 +18,7 @@ using namespace std;
 
 int main() {
     cout<<"Question 1:"<<endl;
+
     //first we will have to read data from the files and insert them into a single vector
     //we will use a custom coordinate class to hold x and y as fields and a reference to which file it came from
     vector<Coordinate> unsortedCoordArray;
@@ -42,8 +45,16 @@ int main() {
     vector<Coordinate> closestPair = findClosestCoordinatePair(sortedCoordArray,0,sortedCoordArray.size()-2);
     cout<<"the closest pair are " <<closestPair[0].getX()<<", "<<closestPair[0].getY()<<" from "<<(closestPair[0].isInA() ? "a" : "b")<<
     " and "<<closestPair[1].getX()<<", "<<closestPair[1].getY()<<" from "<<(closestPair[1].isInA() ? "a" : "b") <<endl;
-
+    //-------------------------------------------------------
     cout<<"Question 2"<<endl;
+    //first we will read the golf scores from the file
+    //next we will sort the scores by name in order to match the scores for the same golfer
+    //we iterate through the sorted scores
+        //now we iterate through golfers with the same name
+        //if there are less than 5, we just ignore them
+        //if there are 5 or more, we average them and make an accurate golfer which we put in the rankings
+    //finally we sort the rankings using GolferComparator
+
     return 0;
 }
 //this recursive function reads the given file, and inserts coordinates into the provided array
