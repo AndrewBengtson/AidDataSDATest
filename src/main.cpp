@@ -32,7 +32,7 @@ int main() {
 //this function calls my solution to question one
 void QuestionOne() {
     cout << "Question 1:" << endl;
-    //first we will have to read data from the files and insert them into a single vector
+    //first we will have to read data from the files and insert them into a single vector 
 //we will use a custom coordinate class to hold x and y as fields and a reference to which file it came from
     vector<Coordinate> unsortedCoordArray;
     fstream a;
